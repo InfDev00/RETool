@@ -4,7 +4,12 @@ namespace RETool.GridSystem;
 
 public class Grid2D<T> : Grid3D<T>
 {
+    #region Constructor
+
     public Grid2D(int width, int height) : base(1,width, height) { }
+    public Grid2D(int size) : base(1,size,size) { }
+
+    #endregion
 
     #region Coordinate
 
@@ -22,6 +27,8 @@ public class Grid2D<T> : Grid3D<T>
             }
         }
     }
+    public bool IsValidCoordinate(int x, int y) => x >= 0 && x < Width && y >= 0 && y < Height;
+
     #endregion
 
     #region Vector
@@ -40,18 +47,20 @@ public class Grid2D<T> : Grid3D<T>
     {
         x = Mathf.FloorToInt((worldPosition.x - UnitGridSize / 2) / (UnitGridSize + Gap.x));
         y = Mathf.FloorToInt((worldPosition.z - UnitGridSize / 2) / (UnitGridSize + Gap.z));
+        
+        if (!IsValidCoordinate(x, y)) throw new IndexOutOfRangeException("Given Vector3 is out of range");
     }
 
-    public override void SetValue(Vector3 worldPosition, T value)
+    public override void SetValue(Vector3 worldPosition, T value, bool warning = false)
     {
         GetXY(worldPosition, out var x,out var y);
-        SetValue(x, y, value);
+        SetValue(x, y, value, warning);
     }
 
-    public override T? GetValue(Vector3 worldPosition)
+    public override T? GetValue(Vector3 worldPosition, bool warning = false)
     {
         GetXY(worldPosition, out var x, out var z);
-        return GetValue(x, z);
+        return GetValue(x, z, warning);
     }
     
     public override void ForEach(Action<Vector3, T> action)

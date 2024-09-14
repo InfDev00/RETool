@@ -4,14 +4,16 @@ namespace RETool.GridSystem
 {
     public class Grid3D<T>
     {
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-        public int Depth { get; private set; }
+        public int Width { get; }
+        public int Height { get; }
+        public int Depth { get; }
 
         public float UnitGridSize = 1;
         public Vector3 Gap = new Vector3(0, 0, 0);
 
         protected readonly T[,,] _gridArray;
+
+        #region Constructor
 
         public Grid3D(int width, int height, int depth)
         {
@@ -22,19 +24,29 @@ namespace RETool.GridSystem
             _gridArray = new T[depth, height, width];
         }
 
+        public Grid3D(int size)
+        {
+            Width = size;
+            Height = size;
+            Depth = size;
+            
+            _gridArray = new T[size, size, size];
+        }
+
+        #endregion
+        
         #region Coordinate
 
         public void SetValue(int x, int y, int z, T value, bool warning = false)
         {
             if (IsValidCoordinate(x, y, z)) _gridArray[z, y, x] = value;
-            else if (warning) Debug.LogError("Given coordinate is out of range");
+            else if (warning) throw new IndexOutOfRangeException("Given coordinate is out of range");
         }
 
         public T? GetValue(int x, int y, int z, bool warning = false)
         {
             if (IsValidCoordinate(x, y, z)) return _gridArray[z, y, x];
-
-            if (warning) Debug.LogError("Given coordinate is out of range");
+            if (warning) throw new IndexOutOfRangeException("Given coordinate is out of range");
 
             return default;
         }
@@ -69,23 +81,25 @@ namespace RETool.GridSystem
             );
         }
 
-        public void GetXYZ(Vector3 worldPosition, out int x, out int y, out int z)
+        public void GetXYZ(Vector3 position, out int x, out int y, out int z)
         {
-            x = Mathf.FloorToInt((worldPosition.x - UnitGridSize / 2) / (UnitGridSize + Gap.x));
-            y = Mathf.FloorToInt((worldPosition.y - UnitGridSize / 2) / (UnitGridSize + Gap.y));
-            z = Mathf.FloorToInt((worldPosition.z - UnitGridSize / 2) / (UnitGridSize + Gap.z));
+            x = Mathf.FloorToInt((position.x - UnitGridSize / 2) / (UnitGridSize + Gap.x));
+            y = Mathf.FloorToInt((position.y - UnitGridSize / 2) / (UnitGridSize + Gap.y));
+            z = Mathf.FloorToInt((position.z - UnitGridSize / 2) / (UnitGridSize + Gap.z));
+
+            if (!IsValidCoordinate(x, y, z)) throw new IndexOutOfRangeException("Given Vector3 is out of range");
         }
 
-        public virtual void SetValue(Vector3 worldPosition, T value)
+        public virtual void SetValue(Vector3 position, T value, bool warning = false)
         {
-            GetXYZ(worldPosition, out var x, out var y, out var z);
-            SetValue(x, y, z, value);
+            GetXYZ(position, out var x, out var y, out var z);
+            SetValue(x, y, z, value, warning);
         }
 
-        public virtual T? GetValue(Vector3 worldPosition)
+        public virtual T? GetValue(Vector3 position, bool warning = false)
         {
-            GetXYZ(worldPosition, out var x, out var y, out var z);
-            return GetValue(x, y, z);
+            GetXYZ(position, out var x, out var y, out var z);
+            return GetValue(x, y, z, warning);
         }
 
         public virtual void ForEach(Action<Vector3, T> action)
