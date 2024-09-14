@@ -21,4 +21,5 @@ List로 된 자료구조 라이브러리
 - ListedPriorityQueue
 
 ## Download
-[Download](https://github.com/InfDev00/RETool/releases/download/1.1.0/RETool.dll) 혹은 release에서 다운로드
+1. [Download](https://github.com/InfDev00/RETool/releases/download/1.1.0/RETool.dll) 혹은 release에서 다운로드
+2. unity 프로젝트의 Asset 폴더 내부에 RETool.dll 파일 배치
