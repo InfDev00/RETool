@@ -1,6 +1,5 @@
 # RETool
 Unity 개발 편의를 위한 간단한 도구 모음
-[Download](https://github.com/InfDev00/RETool/releases/download/1.1.0/RETool.dll)
 
 자세한 설명은 아래 페이지 참조
 
@@ -20,3 +19,6 @@ List로 된 자료구조 라이브러리
 - ListedQueue
 - ListedStack
 - ListedPriorityQueue
+
+## Download
+[Download](https://github.com/InfDev00/RETool/releases/download/1.1.0/RETool.dll) 혹은 release에서 다운로드
