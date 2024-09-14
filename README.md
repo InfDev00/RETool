@@ -9,8 +9,6 @@ Unity 개발 편의를 위한 간단한 도구 모음
 ## GridSystem 
 정사각형 및 정육각형, 큐브 등을 관리할 수 있는 라이브러리
 
-Library for Create and Manage Square, Cube, Hex grids. 
-
 - Grid3D
 - Grid2D
 - HexGrid
@@ -18,7 +16,6 @@ Library for Create and Manage Square, Cube, Hex grids.
 ## Listed Item
 List로 된 자료구조 라이브러리
 
-Library made by List
 - ListedQueue
 - ListedStack
 - ListedPriorityQueue
